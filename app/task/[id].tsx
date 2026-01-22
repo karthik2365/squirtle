@@ -4,7 +4,7 @@
  * Shows task calendar, heatmap, and statistics
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -218,7 +218,22 @@ export default function TaskDetailScreen() {
           <Text style={[styles.sectionSubtitle, { color: isDark ? '#8B949E' : '#57606A' }]}>
             {stats.yearlyCompletions} completions in the last year
           </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexDirection: 'row' }}
+            onContentSizeChange={(width) => {
+              // This will be handled by the ref if needed
+            }}
+            ref={(ref) => {
+              // Scroll to the end (present date) on mount
+              if (ref) {
+                setTimeout(() => {
+                  ref.scrollToEnd({ animated: false });
+                }, 100);
+              }
+            }}
+          >
             <Heatmap
               completedDates={task.completedDates}
               taskColor={task.color}
