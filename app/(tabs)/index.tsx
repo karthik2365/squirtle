@@ -74,7 +74,7 @@ export default function DashboardScreen() {
             {getGreeting()}
           </Text>
           <Text style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
-            Streakly
+            Squirtle
           </Text>
         </View>
         <Pressable
