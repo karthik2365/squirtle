@@ -11,7 +11,6 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Alert,
   RefreshControl,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -21,6 +20,7 @@ import { useTasks } from '@/context/TaskContext';
 import { TaskCard } from '@/components/TaskCard';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { EmptyState } from '@/components/EmptyState';
+import { confirmAction } from '@/utils/confirm';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function DashboardScreen() {
@@ -42,18 +42,13 @@ export default function DashboardScreen() {
   };
   
   const handleTaskLongPress = (taskId: string, taskName: string) => {
-    Alert.alert(
-      'Delete Task',
-      `Are you sure you want to delete "${taskName}"? This action cannot be undone.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => deleteTask(taskId),
-        },
-      ]
-    );
+    confirmAction({
+      title: 'Delete Task',
+      message: `Are you sure you want to delete "${taskName}"? This action cannot be undone.`,
+      confirmText: 'Delete',
+      destructive: true,
+      onConfirm: () => deleteTask(taskId),
+    });
   };
   
   const onRefresh = async () => {

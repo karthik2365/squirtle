@@ -11,7 +11,6 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Alert,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +21,7 @@ import { CalendarView } from '@/components/CalendarView';
 import { StatsCard } from '@/components/StatsCard';
 import { calculateStats } from '@/utils/stats';
 import { getToday, isToday, isFuture } from '@/utils/date';
+import { confirmAction } from '@/utils/confirm';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TaskDetailScreen() {
@@ -63,21 +63,16 @@ export default function TaskDetailScreen() {
   };
   
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Task',
-      `Are you sure you want to delete "${task.name}"? All progress will be lost.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            await deleteTask(task.id);
-            router.back();
-          },
-        },
-      ]
-    );
+    confirmAction({
+      title: 'Delete Task',
+      message: `Are you sure you want to delete "${task.name}"? All progress will be lost.`,
+      confirmText: 'Delete',
+      destructive: true,
+      onConfirm: async () => {
+        await deleteTask(task.id);
+        router.back();
+      },
+    });
   };
   
   const todayCompleted = task.completedDates.includes(getToday());
