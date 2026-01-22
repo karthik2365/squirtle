@@ -5,10 +5,15 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import * as Crypto from 'expo-crypto';
 import { Task } from '@/types/task';
 import { TASK_COLORS } from '@/types/task';
 import { StorageService } from '@/utils/storage';
+
+// Generate a unique ID using expo-crypto
+function generateId(): string {
+  return Crypto.randomUUID();
+}
 
 interface TaskContextType {
   tasks: Task[];
@@ -46,7 +51,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   const addTask = async (name: string): Promise<Task> => {
     const colorIndex = tasks.length % TASK_COLORS.length;
     const newTask: Task = {
-      id: uuidv4(),
+      id: generateId(),
       name: name.trim(),
       color: TASK_COLORS[colorIndex],
       createdAt: new Date().toISOString(),
