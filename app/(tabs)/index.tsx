@@ -1,98 +1,238 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+/**
+ * Task Dashboard Screen
+ * 
+ * Main screen showing all tasks in a list/grid view
+ */
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Alert,
+  RefreshControl,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTasks } from '@/context/TaskContext';
+import { TaskCard } from '@/components/TaskCard';
+import { AddTaskModal } from '@/components/AddTaskModal';
+import { EmptyState } from '@/components/EmptyState';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeScreen() {
+export default function DashboardScreen() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const router = useRouter();
+  
+  const { tasks, loading, addTask, deleteTask, refreshTasks } = useTasks();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  
+  const handleAddTask = async (name: string, color: string) => {
+    await addTask(name);
+    setModalVisible(false);
+  };
+  
+  const handleTaskPress = (taskId: string) => {
+    router.push(`/task/${taskId}`);
+  };
+  
+  const handleTaskLongPress = (taskId: string, taskName: string) => {
+    Alert.alert(
+      'Delete Task',
+      `Are you sure you want to delete "${taskName}"? This action cannot be undone.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => deleteTask(taskId),
+        },
+      ]
+    );
+  };
+  
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refreshTasks();
+    setRefreshing(false);
+  };
+  
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: isDark ? '#0D1117' : '#F6F8FA' }]}
+      edges={['top']}
+    >
+      {/* Header */}
+      <View style={styles.header}>
+        <View>
+          <Text style={[styles.greeting, { color: isDark ? '#8B949E' : '#57606A' }]}>
+            {getGreeting()}
+          </Text>
+          <Text style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+            Streakly
+          </Text>
+        </View>
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          style={({ pressed }) => [
+            styles.addButton,
+            { backgroundColor: isDark ? '#238636' : '#1F883D' },
+            pressed && { opacity: 0.8 },
+          ]}
+        >
+          <Ionicons name="add" size={24} color="#FFFFFF" />
+        </Pressable>
+      </View>
+      
+      {/* Task count */}
+      {tasks.length > 0 && (
+        <View style={styles.countContainer}>
+          <Text style={[styles.countText, { color: isDark ? '#8B949E' : '#57606A' }]}>
+            {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}
+          </Text>
+        </View>
+      )}
+      
+      {/* Task list */}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Text style={[styles.loadingText, { color: isDark ? '#8B949E' : '#57606A' }]}>
+            Loading tasks...
+          </Text>
+        </View>
+      ) : tasks.length === 0 ? (
+        <EmptyState
+          title="No tasks yet"
+          subtitle="Create your first task to start tracking your daily progress and building streaks!"
+          icon="rocket-outline"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
+      ) : (
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={isDark ? '#8B949E' : '#57606A'}
             />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+          }
+        >
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onPress={() => handleTaskPress(task.id)}
+              onLongPress={() => handleTaskLongPress(task.id, task.name)}
+            />
+          ))}
+          <View style={styles.bottomPadding} />
+        </ScrollView>
+      )}
+      
+      {/* Add Task Modal */}
+      <AddTaskModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onAdd={handleAddTask}
+        existingTaskCount={tasks.length}
+      />
+      
+      {/* Floating action button (alternative) */}
+      {tasks.length > 0 && (
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          style={({ pressed }) => [
+            styles.fab,
+            { backgroundColor: isDark ? '#238636' : '#1F883D' },
+            pressed && { transform: [{ scale: 0.95 }] },
+          ]}
+        >
+          <Ionicons name="add" size={28} color="#FFFFFF" />
+        </Pressable>
+      )}
+    </SafeAreaView>
   );
 }
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  greeting: {
+    fontSize: 14,
+    fontWeight: '500',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  addButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+  },
+  countText: {
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: 14,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingTop: 8,
+  },
+  bottomPadding: {
+    height: 100,
+  },
+  fab: {
     position: 'absolute',
+    bottom: 24,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
 });
