@@ -4,20 +4,20 @@
  * Simple modal for creating new tasks
  */
 
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Modal,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { TASK_COLORS } from '@/types/task';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import {
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 
 interface AddTaskModalProps {
   visible: boolean;
@@ -65,7 +65,7 @@ export function AddTaskModal({ visible, onClose, onAdd, existingTaskCount }: Add
           style={[
             styles.container,
             {
-              backgroundColor: isDark ? '#161B22' : '#FFFFFF',
+              backgroundColor: isDark ? '#000000' : '#FFFFFF',
               borderColor: isDark ? '#30363D' : '#D0D7DE',
             },
           ]}
