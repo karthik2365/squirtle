@@ -4,12 +4,12 @@
  * Displays a task with mini stats and preview
  */
 
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Task } from '@/types/task';
 import { calculateStats } from '@/utils/stats';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useMemo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface TaskCardProps {
   task: Task;
@@ -30,8 +30,8 @@ export function TaskCard({ task, onPress, onLongPress }: TaskCardProps) {
       style={({ pressed }) => [
         styles.container,
         {
-          backgroundColor: isDark ? '#161B22' : '#FFFFFF',
-          borderColor: isDark ? '#30363D' : '#D0D7DE',
+          backgroundColor: isDark ? '#1A1A1A' : '#FFFFFF',
+          borderColor: isDark ? '#2A2A2A' : '#D0D7DE',
           opacity: pressed ? 0.8 : 1,
           transform: [{ scale: pressed ? 0.98 : 1 }],
         },
@@ -44,7 +44,7 @@ export function TaskCard({ task, onPress, onLongPress }: TaskCardProps) {
         {/* Header */}
         <View style={styles.header}>
           <Text
-            style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}
+            style={[styles.title, { color: isDark ? '#FFFFFF' : '#1F2328' }]}
             numberOfLines={1}
           >
             {task.name}

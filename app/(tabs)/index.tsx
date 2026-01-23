@@ -4,24 +4,24 @@
  * Main screen showing all tasks in a list/grid view
  */
 
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  RefreshControl,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useTasks } from '@/context/TaskContext';
-import { TaskCard } from '@/components/TaskCard';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { EmptyState } from '@/components/EmptyState';
+import { TaskCard } from '@/components/TaskCard';
+import { useTasks } from '@/context/TaskContext';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { confirmAction } from '@/utils/confirm';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function DashboardScreen() {
   const colorScheme = useColorScheme();
@@ -59,16 +59,13 @@ export default function DashboardScreen() {
   
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: isDark ? '#0D1117' : '#F6F8FA' }]}
+      style={[styles.container, { backgroundColor: isDark ? '#000000' : '#F6F8FA' }]}
       edges={['top']}
     >
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={[styles.greeting, { color: isDark ? '#8B949E' : '#57606A' }]}>
-            {getGreeting()}
-          </Text>
-          <Text style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+          <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
             Squirtle
           </Text>
         </View>

@@ -4,25 +4,25 @@
  * Shows task calendar, heatmap, and statistics
  */
 
-import React, { useMemo, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useTasks } from '@/context/TaskContext';
-import { Heatmap } from '@/components/Heatmap';
 import { CalendarView } from '@/components/CalendarView';
+import { Heatmap } from '@/components/Heatmap';
 import { StatsCard } from '@/components/StatsCard';
-import { calculateStats } from '@/utils/stats';
-import { getToday, isToday, isFuture } from '@/utils/date';
+import { useTasks } from '@/context/TaskContext';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { confirmAction } from '@/utils/confirm';
+import { getToday, isFuture } from '@/utils/date';
+import { calculateStats } from '@/utils/stats';
 import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useMemo } from 'react';
+import {
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -41,10 +41,10 @@ export default function TaskDetailScreen() {
   if (!task || !stats) {
     return (
       <SafeAreaView
-        style={[styles.container, { backgroundColor: isDark ? '#0D1117' : '#F6F8FA' }]}
+        style={[styles.container, { backgroundColor: isDark ? '#000000' : '#F6F8FA' }]}
       >
         <View style={styles.notFound}>
-          <Text style={[styles.notFoundText, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+          <Text style={[styles.notFoundText, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
             Task not found
           </Text>
           <Pressable onPress={() => router.back()}>
@@ -79,7 +79,7 @@ export default function TaskDetailScreen() {
   
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: isDark ? '#0D1117' : '#F6F8FA' }]}
+      style={[styles.container, { backgroundColor: isDark ? '#000000' : '#F6F8FA' }]}
       edges={['top']}
     >
       {/* Header */}
@@ -88,13 +88,13 @@ export default function TaskDetailScreen() {
           <Ionicons
             name="arrow-back"
             size={24}
-            color={isDark ? '#F0F6FC' : '#1F2328'}
+            color={isDark ? '#FFFFFF' : '#1F2328'}
           />
         </Pressable>
         <View style={styles.titleContainer}>
           <View style={[styles.colorDot, { backgroundColor: task.color }]} />
           <Text
-            style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}
+            style={[styles.title, { color: isDark ? '#FFFFFF' : '#1F2328' }]}
             numberOfLines={1}
           >
             {task.name}
@@ -123,12 +123,12 @@ export default function TaskDetailScreen() {
               backgroundColor: todayCompleted
                 ? task.color
                 : isDark
-                ? '#161B22'
+                ? '#1A1A1A'
                 : '#FFFFFF',
               borderColor: todayCompleted
                 ? task.color
                 : isDark
-                ? '#30363D'
+                ? '#2A2A2A'
                 : '#D0D7DE',
             },
             pressed && { opacity: 0.8 },
@@ -160,12 +160,12 @@ export default function TaskDetailScreen() {
                   backgroundColor: todayCompleted
                     ? 'rgba(255,255,255,0.2)'
                     : isDark
-                    ? '#21262D'
+                    ? '#2A2A2A'
                     : '#F6F8FA',
                   borderColor: todayCompleted
                     ? 'rgba(255,255,255,0.3)'
                     : isDark
-                    ? '#30363D'
+                    ? '#3A3A3A'
                     : '#D0D7DE',
                 },
               ]}
@@ -207,12 +207,12 @@ export default function TaskDetailScreen() {
           style={[
             styles.heatmapCard,
             {
-              backgroundColor: isDark ? '#161B22' : '#FFFFFF',
-              borderColor: isDark ? '#30363D' : '#D0D7DE',
+              backgroundColor: isDark ? '#1A1A1A' : '#FFFFFF',
+              borderColor: isDark ? '#2A2A2A' : '#D0D7DE',
             },
           ]}
         >
-          <Text style={[styles.sectionTitle, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
             Activity
           </Text>
           <Text style={[styles.sectionSubtitle, { color: isDark ? '#8B949E' : '#57606A' }]}>

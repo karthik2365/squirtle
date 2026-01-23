@@ -4,11 +4,11 @@
  * Displays detailed statistics for a task
  */
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { TaskStats } from '@/types/task';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface StatsCardProps {
   stats: TaskStats;
@@ -24,12 +24,12 @@ export function StatsCard({ stats, taskColor }: StatsCardProps) {
       style={[
         styles.container,
         {
-          backgroundColor: isDark ? '#161B22' : '#FFFFFF',
-          borderColor: isDark ? '#30363D' : '#D0D7DE',
+          backgroundColor: isDark ? '#1A1A1A' : '#FFFFFF',
+          borderColor: isDark ? '#2A2A2A' : '#D0D7DE',
         },
       ]}
     >
-      <Text style={[styles.title, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+      <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
         Statistics
       </Text>
       
@@ -104,7 +104,7 @@ function StatItem({ icon, value, label, suffix, color, isDark, highlight }: Stat
       style={[
         styles.statItem,
         {
-          backgroundColor: isDark ? '#21262D' : '#F6F8FA',
+          backgroundColor: isDark ? '#2A2A2A' : '#F6F8FA',
           borderColor: highlight ? color : 'transparent',
           borderWidth: highlight ? 1 : 0,
         },
@@ -114,7 +114,7 @@ function StatItem({ icon, value, label, suffix, color, isDark, highlight }: Stat
         <Ionicons name={icon} size={20} color={color} />
       </View>
       <View style={styles.statContent}>
-        <Text style={[styles.statValue, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+        <Text style={[styles.statValue, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
           {value}
           {suffix && <Text style={styles.statSuffix}>{suffix}</Text>}
         </Text>

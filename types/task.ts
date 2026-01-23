@@ -45,22 +45,22 @@ export const TASK_COLORS = [
   '#84CC16', // Lime
 ];
 
-// Heatmap intensity colors (GitHub-style green)
+// Heatmap intensity colors (Red theme)
 export const HEATMAP_COLORS = {
-  empty: '#161B22',
-  level0: '#161B22',
-  level1: '#0E4429',
-  level2: '#006D32',
-  level3: '#26A641',
-  level4: '#39D353',
+  empty: '#1A1A1A',
+  level0: '#1A1A1A',
+  level1: '#5C1A1A',
+  level2: '#8B2525',
+  level3: '#C53030',
+  level4: '#F56565',
 };
 
-// Light mode heatmap colors
+// Light mode heatmap colors (Red theme)
 export const HEATMAP_COLORS_LIGHT = {
   empty: '#EBEDF0',
   level0: '#EBEDF0',
-  level1: '#9BE9A8',
-  level2: '#40C463',
-  level3: '#30A14E',
-  level4: '#216E39',
+  level1: '#FEB2B2',
+  level2: '#FC8181',
+  level3: '#F56565',
+  level4: '#C53030',
 };

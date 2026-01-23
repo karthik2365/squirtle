@@ -4,12 +4,12 @@
  * Displays a year-long heatmap of task completions
  */
 
-import React, { useMemo } from 'react';
-import { View, StyleSheet, Text, Pressable, Dimensions } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { HEATMAP_COLORS, HEATMAP_COLORS_LIGHT } from '@/types/task';
 import { getYearHeatmapData, isFuture, isToday } from '@/utils/date';
 import { calculateIntensity } from '@/utils/stats';
+import React, { useMemo } from 'react';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface HeatmapProps {
   completedDates: string[];
@@ -31,11 +31,11 @@ export function Heatmap({ completedDates, taskColor, onDayPress }: HeatmapProps)
   
   const getColor = (date: string): string => {
     if (isFuture(date)) {
-      return isDark ? '#21262D' : '#EAEEF2';
+      return isDark ? '#2A2A2A' : '#EAEEF2';
     }
     
     if (!completedSet.has(date)) {
-      return isDark ? '#21262D' : '#EAEEF2';
+      return isDark ? '#2A2A2A' : '#EAEEF2';
     }
     
     const intensity = calculateIntensity(date, completedDates);

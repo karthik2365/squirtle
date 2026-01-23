@@ -4,11 +4,11 @@
  * Compact monthly calendar for marking task completion
  */
 
-import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { getMonthGrid, formatDate, isFuture, isToday, getToday } from '@/utils/date';
+import { getMonthGrid, isFuture, isToday } from '@/utils/date';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useMemo, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface CalendarViewProps {
   completedDates: string[];
@@ -66,8 +66,8 @@ export function CalendarView({ completedDates, taskColor, onDayPress }: Calendar
       style={[
         styles.container,
         {
-          backgroundColor: isDark ? '#161B22' : '#FFFFFF',
-          borderColor: isDark ? '#30363D' : '#D0D7DE',
+          backgroundColor: isDark ? '#1A1A1A' : '#FFFFFF',
+          borderColor: isDark ? '#2A2A2A' : '#D0D7DE',
         },
       ]}
     >
@@ -82,7 +82,7 @@ export function CalendarView({ completedDates, taskColor, onDayPress }: Calendar
         </Pressable>
         
         <Pressable onPress={goToToday}>
-          <Text style={[styles.monthTitle, { color: isDark ? '#F0F6FC' : '#1F2328' }]}>
+          <Text style={[styles.monthTitle, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
             {monthName}
           </Text>
         </Pressable>
