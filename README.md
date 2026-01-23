@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🐢 Squirtle
+#  Squirtle
 
 ### *Build habits. Track streaks. Level up your life.*
 
@@ -33,22 +33,6 @@
 
 📈 **Statistics** — View detailed stats including completion rates and longest streaks
 
-## 📸 Screenshots
-
-<div align="center">
-<table>
-  <tr>
-    <td align="center"><strong>Dashboard</strong></td>
-    <td align="center"><strong>Task Details</strong></td>
-    <td align="center"><strong>Heatmap</strong></td>
-  </tr>
-  <tr>
-    <td><img src="docs/screenshots/dashboard.png" width="200"/></td>
-    <td><img src="docs/screenshots/task-detail.png" width="200"/></td>
-    <td><img src="docs/screenshots/heatmap.png" width="200"/></td>
-  </tr>
-</table>
-</div>
 
 ## 🚀 Quick Start
 
