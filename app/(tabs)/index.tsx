@@ -13,6 +13,7 @@ import { confirmAction } from '@/utils/confirm';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+
 import {
   Pressable,
   RefreshControl,
@@ -22,6 +23,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+
 
 export default function DashboardScreen() {
   const colorScheme = useColorScheme();
@@ -65,7 +68,7 @@ export default function DashboardScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#1F2328' }]}>
+          <Text style={[styles.title, { color: isDark ? '#ffffff' : '#1F2328', fontFamily: 'Poppins-Bold' }]}>
             Squirtle
           </Text>
         </View>
@@ -73,11 +76,11 @@ export default function DashboardScreen() {
           onPress={() => setModalVisible(true)}
           style={({ pressed }) => [
             styles.addButton,
-            { backgroundColor: isDark ? '#238636' : '#1F883D' },
+            { backgroundColor: isDark ? '#2b7c3b' : '#1F883D' },
             pressed && { opacity: 0.8 },
           ]}
         >
-          <Ionicons name="add" size={24} color="#FFFFFF" />
+          <Ionicons name="add" size={24} color="#000000" />
         </Pressable>
       </View>
       
