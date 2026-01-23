@@ -20,7 +20,10 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
+      // Show splash screen for 1 second
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 1000);
     }
   }, [fontsLoaded]);
 
