@@ -53,19 +53,35 @@ export function Heatmap({ completedDates, taskColor, onDayPress }: HeatmapProps)
   
   return (
     <View style={styles.container}>
-      {/* Month labels */}
-      <View style={styles.monthLabels}>
-        {heatmapData.months.slice(-12).filter((_, i) => i % 1 === 0).map((month, index) => (
-          <Text
-            key={`${month.name}-${index}`}
-            style={[
-              styles.monthLabel,
-              { color: isDark ? '#8B949E' : '#57606A' },
-            ]}
-          >
-            {month.name}
-          </Text>
-        ))}
+      {/* Month labels - positioned based on week index */}
+      <View style={styles.monthLabelsContainer}>
+        <View style={{ width: 32 }} />
+        <View style={styles.monthLabelsRow}>
+          {heatmapData.months.map((month, index) => {
+            const nextMonth = heatmapData.months[index + 1];
+            const weeksSpan = nextMonth 
+              ? nextMonth.startWeek - month.startWeek 
+              : heatmapData.weeks.length - month.startWeek;
+            
+            // Only show label if there's enough space (at least 3 weeks)
+            if (weeksSpan < 3) return null;
+            
+            return (
+              <Text
+                key={`${month.name}-${index}`}
+                style={[
+                  styles.monthLabel,
+                  { 
+                    width: weeksSpan * (CELL_SIZE + CELL_GAP),
+                    color: isDark ? '#8B949E' : '#57606A',
+                  },
+                ]}
+              >
+                {month.name}
+              </Text>
+            );
+          })}
+        </View>
       </View>
       
       {/* Heatmap grid */}
@@ -148,41 +164,40 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 12,
   },
-  monthLabels: {
+  monthLabelsContainer: {
     flexDirection: 'row',
-    marginBottom: 8,
-    marginLeft: 32,
+    marginBottom: 6,
+  },
+  monthLabelsRow: {
+    flexDirection: 'row',
   },
   monthLabel: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '500',
-    width: (CELL_SIZE + CELL_GAP) * 4.3,
   },
   gridContainer: {
     flexDirection: 'row',
   },
   dayLabels: {
-    marginRight: 6,
+    width: 28,
+    marginRight: 4,
     justifyContent: 'space-around',
-    paddingVertical: 2,
   },
   dayLabel: {
-    fontSize: 10,
+    fontSize: 9,
     height: CELL_SIZE + CELL_GAP,
     lineHeight: CELL_SIZE + CELL_GAP,
   },
   weeksContainer: {
     flexDirection: 'row',
-    gap: 1,
   },
   week: {
     flexDirection: 'column',
-    gap: 1,
   },
   cell: {
     width: CELL_SIZE,
     height: CELL_SIZE,
-    borderRadius: 3,
+    borderRadius: 2,
     margin: CELL_GAP / 2,
   },
   legend: {
@@ -199,6 +214,6 @@ const styles = StyleSheet.create({
   legendCell: {
     width: CELL_SIZE,
     height: CELL_SIZE,
-    borderRadius: 3,
+    borderRadius: 2,
   },
 });
